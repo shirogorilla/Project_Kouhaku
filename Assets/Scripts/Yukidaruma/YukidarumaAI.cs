@@ -66,6 +66,9 @@ public class YukidarumaAI : MonoBehaviour
                 else if (distance > stopDistance)
                 {
                     agent.SetDestination(player.position);
+
+                    // ↓ ドアチェック追加（前方に何か障害物があれば判定）
+                    CheckAndForceOpenDoor();
                 }
                 else
                 {
@@ -136,5 +139,24 @@ public class YukidarumaAI : MonoBehaviour
 
         Debug.Log("🧊 雪霊が窓の破壊を終え、侵入しました");
         currentState = State.Idle;
+    }
+
+    private void CheckAndForceOpenDoor()
+    {
+        RaycastHit hit;
+        Vector3 origin = transform.position + Vector3.up * 0.5f; // 胸あたりから
+        Vector3 direction = transform.forward;
+
+        float checkDistance = 1.0f; // 距離1mまで
+
+        if (Physics.Raycast(origin, direction, out hit, checkDistance))
+        {
+            // ドア処理：DoorControllerを持つ親を探す
+            var door = hit.collider.GetComponentInParent<DoorController>();
+            if (door != null)
+            {
+                door.ForceOpen(transform.position);
+            }
+        }
     }
 }

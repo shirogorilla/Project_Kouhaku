@@ -131,6 +131,7 @@ public class Window : MonoBehaviour, IInteractable
         yield return new WaitForSeconds(delay);
 
         currentState = WindowState.Broken;
+        isBreak = true;
         UpdateVisuals();
         isBeingAttacked = false;
 

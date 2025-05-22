@@ -190,10 +190,19 @@ public class PlayerMovement : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, interactRange))
         {
+            // ① ドア処理：DoorControllerを持つ親を探す
+            var door = hit.collider.GetComponentInParent<DoorController>();
+            if (door != null)
+            {
+                door.Interact(); // ← ドアを開閉
+                return; // ドアなら他のインタラクト処理はしない
+            }
+
+            // ② それ以外のインタラクト処理
             var interactable = hit.collider.GetComponent<IInteractable>();
             if (interactable != null)
             {
-                // ストーブだけはキャンセル時にも使うので、一旦覚えておく
+                // FuelStove だけはキャンセル時にも使うので記録
                 if (interactable is FuelStove stove)
                 {
                     currentInteractTarget = stove;

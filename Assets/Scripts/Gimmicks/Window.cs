@@ -11,6 +11,7 @@ public enum WindowState
 public class Window : MonoBehaviour, IInteractable
 {
     [SerializeField] private WindowState currentState = WindowState.Normal;
+    [SerializeField] private RoomTemperature parentRoom;
 
     [SerializeField] private GameObject glassObject;   // ガラス表示オブジェクト
     [SerializeField] private GameObject boardObject;   // 補強板の表示オブジェクト
@@ -39,6 +40,19 @@ public class Window : MonoBehaviour, IInteractable
 
         if (boardObject != null)
             boardObject.SetActive(currentState == WindowState.Boarded); // 板はBoardedのときだけ表示
+
+        // 🌡️ 温度管理に通知（Broken時のみ冷却）
+        if (parentRoom != null)
+        {
+            if (currentState == WindowState.Broken)
+            {
+                parentRoom.AddOpenWindow();
+            }
+            else
+            {
+                parentRoom.RemoveOpenWindow();
+            }
+        }
     }
 
     /// <summary>

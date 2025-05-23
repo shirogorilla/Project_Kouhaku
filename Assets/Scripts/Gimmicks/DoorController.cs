@@ -7,9 +7,15 @@ public class DoorController : MonoBehaviour, IInteractable
     [SerializeField] private float openSpeed = 2f;
     [SerializeField] private float forceOpenSpeed = 10f; // 敵専用の高速開閉スピード
 
+    [Header("温度拡散")]
+    public RoomTemperature roomA;
+    public RoomTemperature roomB;
+    public float diffusionRate = 0.05f;
+
     private Quaternion closedRotation;
     private Quaternion openRotation;
     private bool isOpen = false;
+    public bool IsOpen => isOpen;
     private Coroutine currentAnim;
 
     private void Start()
@@ -58,5 +64,10 @@ public class DoorController : MonoBehaviour, IInteractable
 
         if (currentAnim != null) StopCoroutine(currentAnim);
         currentAnim = StartCoroutine(RotateDoor(targetRotation, forceOpenSpeed));
+    }
+
+    public RoomTemperature GetOtherRoom(RoomTemperature current)
+    {
+        return current == roomA ? roomB : current == roomB ? roomA : null;
     }
 }

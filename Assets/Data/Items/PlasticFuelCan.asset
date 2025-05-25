@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ccced5718402b749b4e8fd9de5f19a3, type: 3}
+  m_Name: PlasticFuelCan
+  m_EditorClassIdentifier: 
+  itemName: "\u30DD\u30EA\u30BF\u30F3\u30AF"
+  icon: {fileID: 21300000, guid: 844acf2c41e49b64faa938458aa30a9f, type: 3}
+  description: "\u30DD\u30EA\u30BF\u30F3\u30AF"
+  maxStackAmount: 1
+  itemType: 2
+  fuelAmount: 0
+  maxFuelAmount: 100

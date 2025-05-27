@@ -141,6 +141,10 @@ public class PlayerMovement : MonoBehaviour
                 {
                     stove.StartFillingExternally();
                 }
+                else if (interactable is FuelGenerator generator)
+                {
+                    generator.StartFillingExternally();
+                }
                 else if (interactable is Window window)
                 {
                     var selected = InventoryManager.Instance.GetSelectedItem();
@@ -202,15 +206,20 @@ public class PlayerMovement : MonoBehaviour
             var interactable = hit.collider.GetComponent<IInteractable>();
             if (interactable != null)
             {
-                // FuelStove だけはキャンセル時にも使うので記録
+                // キャンセル時にも使うので記録
                 if (interactable is FuelStove stove)
                 {
                     currentInteractTarget = stove;
+                }
+                else if (interactable is FuelGenerator generator)
+                {
+                    currentInteractTarget = generator;
                 }
 
                 // 単押し専用のインタラクト（FuelStoveなどは除外）
                 if (!(interactable is FuelTank) &&
                     !(interactable is FuelStove) &&
+                    !(interactable is FuelGenerator) &&
                     !(interactable is Window))
                 {
                     Debug.Log("▶ 単押し対象にヒット → Interact実行");
@@ -241,7 +250,11 @@ public class PlayerMovement : MonoBehaviour
             // 短押し/長押し機能を持っているオブジェクトはここでInteract
             if (currentInteractTarget is FuelStove stove)
             {
-                stove.Interact(); // ストーブ 電源ON/OFF
+                stove.Interact(); // 燃料ストーブ 電源ON/OFF
+            }
+            else if(currentInteractTarget is FuelGenerator generator)
+            {
+                generator.Interact(); // 燃料発電機 電源ON/OFF
             }
 
             currentInteractTarget = null; // 念のため

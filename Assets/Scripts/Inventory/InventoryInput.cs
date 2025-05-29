@@ -18,7 +18,9 @@ public class InventoryInput : MonoBehaviour
         inputActions.Inventory.Scroll.performed += OnScroll;
         inputActions.Inventory.SelectLeft.performed += _ => inventoryManager.SelectPrevious();
         inputActions.Inventory.SelectRight.performed += _ => inventoryManager.SelectNext();
-        inputActions.Inventory.UseItem.performed += _ => inventoryManager.UseSelectedItem();
+        inputActions.Inventory.UseItemShort.started += _ => inventoryManager.UseSelectedItem();
+        inputActions.Inventory.UseItemLong.performed += _ => inventoryManager.UseItemPerformed();
+        inputActions.Inventory.UseItemLong.canceled += _ => inventoryManager.UseItemCanceled();
         inputActions.Inventory.Drop.performed += _ => inventoryManager.DropSelectedItem();
     }
 
@@ -27,7 +29,9 @@ public class InventoryInput : MonoBehaviour
         inputActions.Inventory.Scroll.performed -= OnScroll;
         inputActions.Inventory.SelectLeft.performed -= _ => inventoryManager.SelectPrevious();
         inputActions.Inventory.SelectRight.performed -= _ => inventoryManager.SelectNext();
-        inputActions.Inventory.UseItem.performed -= _ => inventoryManager.UseSelectedItem();
+        inputActions.Inventory.UseItemShort.started -= _ => inventoryManager.UseSelectedItem();
+        inputActions.Inventory.UseItemLong.performed -= _ => inventoryManager.UseItemPerformed();
+        inputActions.Inventory.UseItemLong.canceled -= _ => inventoryManager.UseItemCanceled();
         inputActions.Inventory.Drop.performed -= _ => inventoryManager.DropSelectedItem();
         inputActions.Disable();
     }

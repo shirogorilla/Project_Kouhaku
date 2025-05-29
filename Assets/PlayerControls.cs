@@ -293,12 +293,21 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""UseItem"",
+                    ""name"": ""UseItemShort"",
                     ""type"": ""Button"",
                     ""id"": ""701a4c76-555f-45a5-8daa-b7867e031663"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""UseItemLong"",
+                    ""type"": ""Button"",
+                    ""id"": ""d7d2f14b-c436-4fac-bbac-93420bed2f44"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=0.3,pressPoint=0.3)"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -352,7 +361,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""UseItem"",
+                    ""action"": ""UseItemShort"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -363,7 +372,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""UseItem"",
+                    ""action"": ""UseItemShort"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -388,6 +397,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Drop"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""286b2c9f-2b02-4fdd-b050-235a11bc536d"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UseItemLong"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5e76bce5-4ce7-412c-b651-64a8dfc70fce"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UseItemLong"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -407,7 +438,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Inventory_Scroll = m_Inventory.FindAction("Scroll", throwIfNotFound: true);
         m_Inventory_SelectLeft = m_Inventory.FindAction("SelectLeft", throwIfNotFound: true);
         m_Inventory_SelectRight = m_Inventory.FindAction("SelectRight", throwIfNotFound: true);
-        m_Inventory_UseItem = m_Inventory.FindAction("UseItem", throwIfNotFound: true);
+        m_Inventory_UseItemShort = m_Inventory.FindAction("UseItemShort", throwIfNotFound: true);
+        m_Inventory_UseItemLong = m_Inventory.FindAction("UseItemLong", throwIfNotFound: true);
         m_Inventory_Drop = m_Inventory.FindAction("Drop", throwIfNotFound: true);
     }
 
@@ -559,7 +591,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Inventory_Scroll;
     private readonly InputAction m_Inventory_SelectLeft;
     private readonly InputAction m_Inventory_SelectRight;
-    private readonly InputAction m_Inventory_UseItem;
+    private readonly InputAction m_Inventory_UseItemShort;
+    private readonly InputAction m_Inventory_UseItemLong;
     private readonly InputAction m_Inventory_Drop;
     public struct InventoryActions
     {
@@ -568,7 +601,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Scroll => m_Wrapper.m_Inventory_Scroll;
         public InputAction @SelectLeft => m_Wrapper.m_Inventory_SelectLeft;
         public InputAction @SelectRight => m_Wrapper.m_Inventory_SelectRight;
-        public InputAction @UseItem => m_Wrapper.m_Inventory_UseItem;
+        public InputAction @UseItemShort => m_Wrapper.m_Inventory_UseItemShort;
+        public InputAction @UseItemLong => m_Wrapper.m_Inventory_UseItemLong;
         public InputAction @Drop => m_Wrapper.m_Inventory_Drop;
         public InputActionMap Get() { return m_Wrapper.m_Inventory; }
         public void Enable() { Get().Enable(); }
@@ -588,9 +622,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @SelectRight.started += instance.OnSelectRight;
             @SelectRight.performed += instance.OnSelectRight;
             @SelectRight.canceled += instance.OnSelectRight;
-            @UseItem.started += instance.OnUseItem;
-            @UseItem.performed += instance.OnUseItem;
-            @UseItem.canceled += instance.OnUseItem;
+            @UseItemShort.started += instance.OnUseItemShort;
+            @UseItemShort.performed += instance.OnUseItemShort;
+            @UseItemShort.canceled += instance.OnUseItemShort;
+            @UseItemLong.started += instance.OnUseItemLong;
+            @UseItemLong.performed += instance.OnUseItemLong;
+            @UseItemLong.canceled += instance.OnUseItemLong;
             @Drop.started += instance.OnDrop;
             @Drop.performed += instance.OnDrop;
             @Drop.canceled += instance.OnDrop;
@@ -607,9 +644,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @SelectRight.started -= instance.OnSelectRight;
             @SelectRight.performed -= instance.OnSelectRight;
             @SelectRight.canceled -= instance.OnSelectRight;
-            @UseItem.started -= instance.OnUseItem;
-            @UseItem.performed -= instance.OnUseItem;
-            @UseItem.canceled -= instance.OnUseItem;
+            @UseItemShort.started -= instance.OnUseItemShort;
+            @UseItemShort.performed -= instance.OnUseItemShort;
+            @UseItemShort.canceled -= instance.OnUseItemShort;
+            @UseItemLong.started -= instance.OnUseItemLong;
+            @UseItemLong.performed -= instance.OnUseItemLong;
+            @UseItemLong.canceled -= instance.OnUseItemLong;
             @Drop.started -= instance.OnDrop;
             @Drop.performed -= instance.OnDrop;
             @Drop.canceled -= instance.OnDrop;
@@ -644,7 +684,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnScroll(InputAction.CallbackContext context);
         void OnSelectLeft(InputAction.CallbackContext context);
         void OnSelectRight(InputAction.CallbackContext context);
-        void OnUseItem(InputAction.CallbackContext context);
+        void OnUseItemShort(InputAction.CallbackContext context);
+        void OnUseItemLong(InputAction.CallbackContext context);
         void OnDrop(InputAction.CallbackContext context);
     }
 }

@@ -198,6 +198,16 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    public void UseItemPerformed()
+    {
+
+    }
+
+    public void UseItemCanceled()
+    {
+
+    }
+
     public bool ConsumeItem(ItemData item)
     {
         foreach (var slot in slots)

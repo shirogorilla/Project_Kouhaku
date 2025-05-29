@@ -16,6 +16,10 @@ public class FuelGenerator : MonoBehaviour, IInteractable
 
     private ItemData_PlasticFuelCan currentCan;
 
+    public int GetFuelAmount() => currentFuel;
+    public int GetMaxFuel() => maxFuel;
+    public bool IsRunning() => isOn;
+
     private void Update()
     {
         HandleFuelFilling();

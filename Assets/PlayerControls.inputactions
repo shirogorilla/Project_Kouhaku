@@ -271,12 +271,21 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "UseItem",
+                    "name": "UseItemShort",
                     "type": "Button",
                     "id": "701a4c76-555f-45a5-8daa-b7867e031663",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "UseItemLong",
+                    "type": "Button",
+                    "id": "d7d2f14b-c436-4fac-bbac-93420bed2f44",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold(duration=0.3,pressPoint=0.3)",
                     "initialStateCheck": false
                 },
                 {
@@ -330,7 +339,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "UseItem",
+                    "action": "UseItemShort",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -341,7 +350,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "UseItem",
+                    "action": "UseItemShort",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -364,6 +373,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Drop",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "286b2c9f-2b02-4fdd-b050-235a11bc536d",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UseItemLong",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5e76bce5-4ce7-412c-b651-64a8dfc70fce",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UseItemLong",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

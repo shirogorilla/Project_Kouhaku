@@ -23,6 +23,8 @@ public class PlayerMovement : MonoBehaviour
     private bool longPressTriggered = false;
     private IInteractable currentInteractTarget;
 
+    public float interactRange = 2.5f; // インタラクト距離
+
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -116,8 +118,6 @@ public class PlayerMovement : MonoBehaviour
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
         RaycastHit hit;
 
-        float interactRange = 2.5f;
-
         if (Physics.Raycast(ray, out hit, interactRange))
         {
             IInteractable interactable = hit.collider.GetComponent<IInteractable>();
@@ -190,7 +190,6 @@ public class PlayerMovement : MonoBehaviour
         // 単押し対象だけ判定（長押し対象はスキップ）
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
         RaycastHit hit;
-        float interactRange = 2.5f;
 
         if (Physics.Raycast(ray, out hit, interactRange))
         {

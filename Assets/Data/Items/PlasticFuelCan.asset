@@ -16,6 +16,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 844acf2c41e49b64faa938458aa30a9f, type: 3}
   description: "\u30DD\u30EA\u30BF\u30F3\u30AF"
   maxStackAmount: 1
-  itemType: 2
+  itemType: 3
+  placeablePrefab: {fileID: 0}
   fuelAmount: 0
   maxFuelAmount: 100

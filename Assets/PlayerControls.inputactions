@@ -399,6 +399,74 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Placement",
+            "id": "f4c14e6f-c106-40f6-b053-502b77400df2",
+            "actions": [
+                {
+                    "name": "Place",
+                    "type": "Button",
+                    "id": "03ba6687-0d76-4646-8b3b-f574ba6c7aa0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Cancel",
+                    "type": "Button",
+                    "id": "474dd396-ae83-4e7f-be6a-85e5e6fa9a88",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Point",
+                    "type": "Value",
+                    "id": "27105686-b830-4e1a-9a38-3ec114c9751f",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "c7efba5b-4fb4-4dff-925f-4abd4f91f78a",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Place",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6a407277-d40c-4a6c-8efe-12ff28d5ad82",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1149c4f5-064d-4beb-aa32-a0e30b70e133",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Point",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

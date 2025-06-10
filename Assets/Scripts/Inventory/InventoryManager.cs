@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -15,8 +16,23 @@ public class InventoryManager : MonoBehaviour
     public GameObject droppedItemPrefab;
     public Transform playerTransform;
 
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Material previewMaterial;
+    [SerializeField] private Material cannotPlaceMaterial;
+    [SerializeField] private float maxPlaceDistance = 5f; // 設置可能距離
+    private bool canPlaceHere = false; // 現在の設置可否状態
+    private Dictionary<Renderer, Material[]> originalMaterials = new Dictionary<Renderer, Material[]>();
+
     private InventorySlotUI[] slots;
     private int selectedSlotIndex = -1;
+
+    private GameObject previewObject = null;
+    private ItemData placingItem = null;
+    private InventorySlotUI placingSlot = null;
+    public bool IsPlacingItem()
+    {
+        return previewObject != null;
+    }
 
     private void Awake()
     {
@@ -27,6 +43,14 @@ public class InventoryManager : MonoBehaviour
     private void Start()
     {
         InitializeSlots(defaultSlotCount);
+    }
+
+    private void Update()
+    {
+        if (IsPlacingItem())
+        {
+            UpdatePreviewPosition();
+        }
     }
 
     private void InitializeSlots(int count)
@@ -45,6 +69,96 @@ public class InventoryManager : MonoBehaviour
             InventorySlotUI slotUI = slotObj.GetComponent<InventorySlotUI>();
             slots[i] = slotUI;
         }
+    }
+
+    private void UpdatePreviewPosition()
+    {
+        if (Camera.main == null || previewObject == null) return;
+
+        Vector2 mousePos = Mouse.current.position.ReadValue();
+        Ray ray = Camera.main.ScreenPointToRay(mousePos);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, 100f, groundLayer))
+        {
+            previewObject.transform.position = hit.point;
+
+            float distance = Vector3.Distance(playerTransform.position, hit.point);
+
+            if (distance <= maxPlaceDistance)
+            {
+                // 設置可能
+                if (!canPlaceHere)
+                {
+                    SetPreviewMaterial(previewMaterial);
+                    canPlaceHere = true;
+                }
+            }
+            else
+            {
+                // 設置不可 (遠すぎる)
+                if (canPlaceHere)
+                {
+                    SetPreviewMaterial(cannotPlaceMaterial);
+                    canPlaceHere = false;
+                }
+            }
+        }
+        else
+        {
+            // RayがGroundLayerに当たってない → 設置不可
+            if (canPlaceHere)
+            {
+                SetPreviewMaterial(cannotPlaceMaterial);
+                canPlaceHere = false;
+            }
+        }
+    }
+
+    private void SetPreviewMaterial(Material mat)
+    {
+        foreach (var renderer in previewObject.GetComponentsInChildren<Renderer>())
+        {
+            Material[] mats = new Material[renderer.sharedMaterials.Length];
+            for (int i = 0; i < mats.Length; i++)
+            {
+                mats[i] = mat;
+            }
+            renderer.materials = mats;
+        }
+    }
+
+    public void ConfirmPlacement()
+    {
+        if (placingItem == null || previewObject == null || placingSlot == null) return;
+
+        if (!canPlaceHere)
+        {
+            Debug.Log("❌ この位置には設置できません！");
+            return;
+        }
+
+        Instantiate(placingItem.placeablePrefab, previewObject.transform.position, previewObject.transform.rotation);
+        placingSlot.AddAmount(-1);
+
+        if (placingSlot.GetAmount() <= 0)
+        {
+            placingSlot.ClearSlot();
+            CompactInventory();
+        }
+
+        CancelPlacement();
+    }
+
+    public void CancelPlacement()
+    {
+        if (previewObject != null)
+        {
+            Destroy(previewObject);
+            previewObject = null;
+        }
+
+        placingItem = null;
+        placingSlot = null;
     }
 
     public void AddItem(ItemData item)
@@ -176,25 +290,90 @@ public class InventoryManager : MonoBehaviour
 
         var item = slot.GetItem();
 
-        // Usable アイテムのみ Use() を呼び出す
-        if (item.itemType != ItemType.Usable)
+        if (placingItem != null)
         {
-            Debug.Log($"使用不可タイプ: {item.itemName} は Usable ではありません");
+            // すでに設置待ち状態なら再度の使用は確定設置
+            ConfirmPlacement();
             return;
         }
 
-        Debug.Log($"アイテム使用: {item.itemName}");
-
-        // TODO: アイテムの使用効果（回復、武器発射など）を書く
-
-        // 数を1減らす（AddAmountにマイナスを渡す）
-        if (slot.AddAmount(-1))
+        switch (item.itemType)
         {
-            if (slot.GetAmount() <= 0)
+            case ItemType.Usable:
+                Debug.Log($"アイテム使用: {item.itemName}");
+                // TODO: アイテムの効果を呼び出す
+                if (slot.AddAmount(-1))
+                {
+                    if (slot.GetAmount() <= 0)
+                    {
+                        slot.ClearSlot();
+                        CompactInventory();
+                    }
+                }
+                break;
+
+            case ItemType.Placeable:
+                Debug.Log($"設置モード開始: {item.itemName}");
+                StartPlacement(item, slot);
+                break;
+
+            default:
+                Debug.Log($"使用不可タイプ: {item.itemName} は Usable または Placeable ではありません");
+                break;
+        }
+    }
+
+    private void StartPlacement(ItemData item, InventorySlotUI slot)
+    {
+        if (previewObject != null) Destroy(previewObject);
+
+        previewObject = Instantiate(item.placeablePrefab);
+        SetPreviewMode(previewObject, true);
+
+        placingItem = item;
+        placingSlot = slot;
+    }
+
+    private void SetPreviewMode(GameObject obj, bool isPreview)
+    {
+        foreach (var renderer in obj.GetComponentsInChildren<Renderer>())
+        {
+            if (isPreview)
             {
-                slot.ClearSlot();
-                CompactInventory();
+                // 元のMaterial保存（初回だけ）
+                if (!originalMaterials.ContainsKey(renderer))
+                {
+                    originalMaterials[renderer] = renderer.sharedMaterials;
+                }
+
+                // 全サブメッシュに PreviewMaterial をセット
+                Material[] previewMats = new Material[renderer.sharedMaterials.Length];
+                for (int i = 0; i < previewMats.Length; i++)
+                {
+                    previewMats[i] = previewMaterial;
+                }
+                renderer.materials = previewMats;
             }
+            else
+            {
+                // 元のMaterialに戻す
+                if (originalMaterials.TryGetValue(renderer, out var mats))
+                {
+                    renderer.materials = mats;
+                }
+            }
+        }
+
+        // Collider無効化
+        if (obj.TryGetComponent<Collider>(out var col))
+        {
+            col.enabled = !isPreview ? true : false;
+        }
+
+        // Cleanup
+        if (!isPreview)
+        {
+            originalMaterials.Clear();
         }
     }
 
@@ -231,6 +410,20 @@ public class InventoryManager : MonoBehaviour
 
         Debug.LogWarning($"❌ 消費失敗：{item.itemName} はインベントリに存在しません");
         return false;
+    }
+
+    public void OnItemPlaced(ItemData item, InventorySlotUI sourceSlot)
+    {
+        Debug.Log($"{item.itemName} を設置完了");
+
+        if (sourceSlot.AddAmount(-1))
+        {
+            if (sourceSlot.GetAmount() <= 0)
+            {
+                sourceSlot.ClearSlot();
+                CompactInventory();
+            }
+        }
     }
 
     public void DropSelectedItem()

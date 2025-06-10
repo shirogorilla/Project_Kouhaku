@@ -421,6 +421,74 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Placement"",
+            ""id"": ""f4c14e6f-c106-40f6-b053-502b77400df2"",
+            ""actions"": [
+                {
+                    ""name"": ""Place"",
+                    ""type"": ""Button"",
+                    ""id"": ""03ba6687-0d76-4646-8b3b-f574ba6c7aa0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""474dd396-ae83-4e7f-be6a-85e5e6fa9a88"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Point"",
+                    ""type"": ""Value"",
+                    ""id"": ""27105686-b830-4e1a-9a38-3ec114c9751f"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""c7efba5b-4fb4-4dff-925f-4abd4f91f78a"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Place"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6a407277-d40c-4a6c-8efe-12ff28d5ad82"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1149c4f5-064d-4beb-aa32-a0e30b70e133"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Point"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -441,6 +509,11 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Inventory_UseItemShort = m_Inventory.FindAction("UseItemShort", throwIfNotFound: true);
         m_Inventory_UseItemLong = m_Inventory.FindAction("UseItemLong", throwIfNotFound: true);
         m_Inventory_Drop = m_Inventory.FindAction("Drop", throwIfNotFound: true);
+        // Placement
+        m_Placement = asset.FindActionMap("Placement", throwIfNotFound: true);
+        m_Placement_Place = m_Placement.FindAction("Place", throwIfNotFound: true);
+        m_Placement_Cancel = m_Placement.FindAction("Cancel", throwIfNotFound: true);
+        m_Placement_Point = m_Placement.FindAction("Point", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -670,6 +743,68 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         }
     }
     public InventoryActions @Inventory => new InventoryActions(this);
+
+    // Placement
+    private readonly InputActionMap m_Placement;
+    private List<IPlacementActions> m_PlacementActionsCallbackInterfaces = new List<IPlacementActions>();
+    private readonly InputAction m_Placement_Place;
+    private readonly InputAction m_Placement_Cancel;
+    private readonly InputAction m_Placement_Point;
+    public struct PlacementActions
+    {
+        private @PlayerControls m_Wrapper;
+        public PlacementActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Place => m_Wrapper.m_Placement_Place;
+        public InputAction @Cancel => m_Wrapper.m_Placement_Cancel;
+        public InputAction @Point => m_Wrapper.m_Placement_Point;
+        public InputActionMap Get() { return m_Wrapper.m_Placement; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PlacementActions set) { return set.Get(); }
+        public void AddCallbacks(IPlacementActions instance)
+        {
+            if (instance == null || m_Wrapper.m_PlacementActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PlacementActionsCallbackInterfaces.Add(instance);
+            @Place.started += instance.OnPlace;
+            @Place.performed += instance.OnPlace;
+            @Place.canceled += instance.OnPlace;
+            @Cancel.started += instance.OnCancel;
+            @Cancel.performed += instance.OnCancel;
+            @Cancel.canceled += instance.OnCancel;
+            @Point.started += instance.OnPoint;
+            @Point.performed += instance.OnPoint;
+            @Point.canceled += instance.OnPoint;
+        }
+
+        private void UnregisterCallbacks(IPlacementActions instance)
+        {
+            @Place.started -= instance.OnPlace;
+            @Place.performed -= instance.OnPlace;
+            @Place.canceled -= instance.OnPlace;
+            @Cancel.started -= instance.OnCancel;
+            @Cancel.performed -= instance.OnCancel;
+            @Cancel.canceled -= instance.OnCancel;
+            @Point.started -= instance.OnPoint;
+            @Point.performed -= instance.OnPoint;
+            @Point.canceled -= instance.OnPoint;
+        }
+
+        public void RemoveCallbacks(IPlacementActions instance)
+        {
+            if (m_Wrapper.m_PlacementActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IPlacementActions instance)
+        {
+            foreach (var item in m_Wrapper.m_PlacementActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_PlacementActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public PlacementActions @Placement => new PlacementActions(this);
     public interface IPlayerActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -687,5 +822,11 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnUseItemShort(InputAction.CallbackContext context);
         void OnUseItemLong(InputAction.CallbackContext context);
         void OnDrop(InputAction.CallbackContext context);
+    }
+    public interface IPlacementActions
+    {
+        void OnPlace(InputAction.CallbackContext context);
+        void OnCancel(InputAction.CallbackContext context);
+        void OnPoint(InputAction.CallbackContext context);
     }
 }

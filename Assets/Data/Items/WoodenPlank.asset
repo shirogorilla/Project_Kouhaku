@@ -16,4 +16,5 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: d8832ac9117ecd74dad9ea28d1a52c52, type: 3}
   description: "\u7A93\u3092\u88DC\u5F37\u3059\u308B\u305F\u3081\u306E\u6728\u306E\u677F"
   maxStackAmount: 3
-  itemType: 3
+  itemType: 4
+  placeablePrefab: {fileID: 0}

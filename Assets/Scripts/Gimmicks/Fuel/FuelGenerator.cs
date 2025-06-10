@@ -15,6 +15,7 @@ public class FuelGenerator : MonoBehaviour, IInteractable
     private float burnRate = 5f;
 
     private ItemData_PlasticFuelCan currentCan;
+    private InventorySlotUI currentSlotUI;
 
     public int GetFuelAmount() => currentFuel;
     public int GetMaxFuel() => maxFuel;
@@ -37,6 +38,12 @@ public class FuelGenerator : MonoBehaviour, IInteractable
                 fillTimer = 0f;
                 currentCan.ConsumeUnit();
                 currentFuel++;
+
+                // 🔥 スロットUIを更新
+                if (currentSlotUI != null)
+                {
+                    currentSlotUI.SetSlot(currentCan, currentSlotUI.GetAmount());
+                }
 
                 Debug.Log($"🔋 発電機に補充: 現在の燃料 = {currentFuel}/{maxFuel}");
 
@@ -111,13 +118,17 @@ public class FuelGenerator : MonoBehaviour, IInteractable
     public void StartFillingExternally()
     {
         var selected = InventoryManager.Instance.GetSelectedItem();
-        if (selected?.itemType == ItemType.PlasticFuelCan && selected is ItemData_PlasticFuelCan can)
+        var selectedSlotUI = InventoryManager.Instance.GetSelectedSlotUI();
+
+        if (selected?.itemType == ItemType.PlasticFuelCan && selected is ItemData_PlasticFuelCan can && selectedSlotUI != null)
         {
             currentCan = can;
+            currentSlotUI = selectedSlotUI;
         }
         else
         {
             currentCan = null;
+            currentSlotUI = null;
         }
 
         if (currentCan != null && currentCan.CurrentAmount > 0 && currentFuel < maxFuel)

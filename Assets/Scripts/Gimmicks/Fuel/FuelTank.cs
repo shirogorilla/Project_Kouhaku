@@ -1,13 +1,14 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class FuelTank : MonoBehaviour, IInteractable
 {
     private bool isFilling = false;
     private float fillTimer = 0f;
-    private float fillRate = 0.2f; // 0.2•b‚²‚Æ‚É1•â[
+    private float fillRate = 0.2f; // 0.2ç§’ã”ã¨ã«1è£œå……
 
     private ItemData_PlasticFuelCan currentCan;
+    private InventorySlotUI currentSlotUI;
 
     private void Update()
     {
@@ -18,13 +19,18 @@ public class FuelTank : MonoBehaviour, IInteractable
             if (fillTimer >= fillRate)
             {
                 fillTimer = 0f;
-                currentCan.FillUnit(); // 1’PˆÊ‚¾‚¯•â[
+                currentCan.FillUnit(); // 1å˜ä½ã ã‘è£œå……
+                Debug.Log($"ç‡ƒæ–™è£œå……: ç¾åœ¨ã®é‡ = {currentCan.CurrentAmount}");
 
-                Debug.Log($"”R—¿•â[: Œ»İ‚Ì—Ê = {currentCan.CurrentAmount}");
+                // ğŸ”¥ ã‚¹ãƒ­ãƒƒãƒˆUIã‚’æ›´æ–°
+                if (currentSlotUI != null)
+                {
+                    currentSlotUI.SetSlot(currentCan, currentSlotUI.GetAmount());
+                }
 
                 if (currentCan.IsFull)
                 {
-                    Debug.Log("–ƒ^ƒ“‚É‚È‚è‚Ü‚µ‚½I");
+                    Debug.Log("æº€ã‚¿ãƒ³ã«ãªã‚Šã¾ã—ãŸï¼");
                     StopFilling();
                 }
             }
@@ -33,30 +39,32 @@ public class FuelTank : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        // ‹óˆ—
+        // ç©ºå‡¦ç†
     }
 
     public void StartFillingExternally()
     {
         var selected = InventoryManager.Instance.GetSelectedItem();
-        if (selected?.itemType == ItemType.PlasticFuelCan && selected is ItemData_PlasticFuelCan can)
+        var selectedSlotUI = InventoryManager.Instance.GetSelectedSlotUI();
+
+        if (selected?.itemType == ItemType.PlasticFuelCan && selected is ItemData_PlasticFuelCan can && selectedSlotUI != null)
         {
             currentCan = can;
+            currentSlotUI = selectedSlotUI;
         }
-        else 
+        else
         {
             currentCan = null;
+            currentSlotUI = null;
         }
 
         if (currentCan != null && !currentCan.IsFull)
         {
-            isFilling = true;
-            fillTimer = 0f;
-            Debug.Log("•â[ŠJni’·‰Ÿ‚µj");
+            StartFilling();
         }
         else
         {
-            Debug.Log("•â[ŠJn‚Å‚«‚Ü‚¹‚ñFƒ|ƒŠƒ^ƒ“ƒN‚ª‚È‚¢ or –ƒ^ƒ“");
+            Debug.Log("è£œå……é–‹å§‹ã§ãã¾ã›ã‚“ï¼šãƒãƒªã‚¿ãƒ³ã‚¯ãŒãªã„ or æº€ã‚¿ãƒ³");
         }
     }
 
@@ -69,12 +77,12 @@ public class FuelTank : MonoBehaviour, IInteractable
     {
         isFilling = true;
         fillTimer = 0f;
-        Debug.Log("•â[ŠJn");
+        Debug.Log("è£œå……é–‹å§‹");
     }
 
     private void StopFilling()
     {
         isFilling = false;
-        Debug.Log("•â[’â~");
+        Debug.Log("è£œå……åœæ­¢");
     }
 }

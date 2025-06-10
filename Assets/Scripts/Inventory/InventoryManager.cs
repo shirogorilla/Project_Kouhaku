@@ -189,7 +189,11 @@ public class InventoryManager : MonoBehaviour
         {
             if (slot.IsEmpty())
             {
-                slot.SetSlot(item, 1);
+                bool isFuelCan = item is ItemData_PlasticFuelCan;
+                float currentFuel = isFuelCan ? ((ItemData_PlasticFuelCan)item).CurrentAmount : -1f;
+                float maxFuel = isFuelCan ? item.maxFuelAmount : -1f;
+
+                slot.SetSlot(item, 1, currentFuel, maxFuel);
                 Debug.Log($"新規スロットに追加：{item.itemName}");
 
                 // 初回選択がまだならここで選択開始
@@ -485,6 +489,15 @@ public class InventoryManager : MonoBehaviour
         if (selectedSlotIndex >= 0 && selectedSlotIndex < slots.Length)
         {
             return slots[selectedSlotIndex].GetItem();
+        }
+        return null;
+    }
+
+    public InventorySlotUI GetSelectedSlotUI()
+    {
+        if (selectedSlotIndex >= 0 && selectedSlotIndex < slots.Length)
+        {
+            return slots[selectedSlotIndex];
         }
         return null;
     }

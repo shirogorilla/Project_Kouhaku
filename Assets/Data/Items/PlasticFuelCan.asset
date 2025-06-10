@@ -18,5 +18,5 @@ MonoBehaviour:
   maxStackAmount: 1
   itemType: 3
   placeablePrefab: {fileID: 0}
-  fuelAmount: 0
   maxFuelAmount: 100
+  fuelAmount: 40

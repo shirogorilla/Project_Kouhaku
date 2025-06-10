@@ -10,6 +10,7 @@ public class FuelStove : MonoBehaviour, IInteractable
     private float fillRate = 0.2f;
 
     private ItemData_PlasticFuelCan currentCan;
+    private InventorySlotUI currentSlotUI;
 
     private bool isOn = false;
     private float burnTimer = 0f;
@@ -32,6 +33,12 @@ public class FuelStove : MonoBehaviour, IInteractable
                 fillTimer = 0f;
                 currentCan.ConsumeUnit();
                 currentFuel++;
+
+                // 🔥 スロットUIを更新
+                if (currentSlotUI != null)
+                {
+                    currentSlotUI.SetSlot(currentCan, currentSlotUI.GetAmount());
+                }
 
                 Debug.Log($"🔥 ストーブに補充: 現在の燃料 = {currentFuel}/{maxFuel}");
 
@@ -106,13 +113,17 @@ public class FuelStove : MonoBehaviour, IInteractable
     public void StartFillingExternally()
     {
         var selected = InventoryManager.Instance.GetSelectedItem();
-        if (selected?.itemType == ItemType.PlasticFuelCan && selected is ItemData_PlasticFuelCan can)
+        var selectedSlotUI = InventoryManager.Instance.GetSelectedSlotUI();
+
+        if (selected?.itemType == ItemType.PlasticFuelCan && selected is ItemData_PlasticFuelCan can && selectedSlotUI != null)
         {
             currentCan = can;
+            currentSlotUI = selectedSlotUI;
         }
         else
         {
             currentCan = null;
+            currentSlotUI = null;
         }
 
         if (currentCan != null && currentCan.CurrentAmount > 0 && currentFuel < maxFuel)

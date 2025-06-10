@@ -4,7 +4,6 @@ using UnityEngine;
 public class ItemData_PlasticFuelCan : ItemData
 {
     public int fuelAmount;               // Œ»Ý‚Ì”R—¿—Ê
-    public int maxFuelAmount = 100;      // Å‘å”R—¿—e—Ê
 
     // Œ»Ý‚Ì”R—¿—Ê‚ðŠO•”‚©‚ç“Ç‚ÝŽæ‚è‚½‚¢ê‡
     public int CurrentAmount => fuelAmount;
@@ -36,5 +35,4 @@ public class ItemData_PlasticFuelCan : ItemData
             fuelAmount--;
         }
     }
-
 }

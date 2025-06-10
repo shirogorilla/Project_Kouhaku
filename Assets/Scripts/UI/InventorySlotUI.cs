@@ -12,6 +12,11 @@ public class InventorySlotUI : MonoBehaviour
     private int amount;
     private Outline outline;
 
+    [SerializeField] private GameObject fuelGaugeRoot;
+    [SerializeField] private Slider fuelGaugeSlider;
+    private float fuelAmount; // 現在量
+    private float fuelMax;    // 最大量
+
     private void Awake()
     {
         // Outline は iconImage のゲームオブジェクトから取得する
@@ -25,7 +30,7 @@ public class InventorySlotUI : MonoBehaviour
         }
     }
 
-    public void SetSlot(ItemData newItem, int newAmount)
+    public void SetSlot(ItemData newItem, int newAmount, float fuelAmount = -1f, float fuelMax = -1f)
     {
         item = newItem;
         amount = newAmount;
@@ -33,6 +38,29 @@ public class InventorySlotUI : MonoBehaviour
         iconImage.sprite = item.icon;
         iconImage.enabled = true;
         amountText.text = amount > 0 ? amount.ToString() : "";
+
+        // PlasticFuelCanの場合
+        if (item is ItemData_PlasticFuelCan fuelCan)
+        {
+            fuelGaugeRoot.SetActive(true);
+            this.fuelAmount = fuelCan.CurrentAmount;
+            this.fuelMax = fuelCan.maxFuelAmount;
+            UpdateFuelGauge();
+        }
+        else
+        {
+            fuelGaugeRoot.SetActive(false);
+        }
+    }
+
+    private void UpdateFuelGauge()
+    {
+        if (fuelGaugeSlider != null && fuelMax > 0f)
+        {
+            fuelGaugeSlider.minValue = 0f;
+            fuelGaugeSlider.maxValue = fuelMax;
+            fuelGaugeSlider.value = fuelAmount;
+        }
     }
 
     public void ClearSlot()

@@ -4498,7 +4498,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &547853194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4511,7 +4511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecdd05e588aed254195f21e9b0b83146, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  snowSpiritPrefab: {fileID: 7291696791720833362, guid: 7661f6e09a49c0f4382c7bed13d41e7f,
+  snowSpiritPrefab: {fileID: 1405333453011195170, guid: 065cf3bb22b13d64bb285d3812a1b921,
     type: 3}
   spawnPoints:
   - {fileID: 600043525}

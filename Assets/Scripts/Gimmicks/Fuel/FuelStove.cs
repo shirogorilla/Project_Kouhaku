@@ -16,6 +16,10 @@ public class FuelStove : MonoBehaviour, IInteractable
     private float burnTimer = 0f;
     private float burnRate = 5f; // 5秒ごとに1消費（好みで調整可能）
 
+    public int GetFuelAmount() => currentFuel;
+    public int GetMaxFuel() => maxFuel;
+    public bool IsRunning() => isOn;
+
     private void Update()
     {
         HandleFuelFilling();

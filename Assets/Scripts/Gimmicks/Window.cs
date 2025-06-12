@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using UnityEngine.UI;
 using UnityEngine;
 
 public enum WindowState
@@ -16,18 +17,34 @@ public class Window : MonoBehaviour, IInteractable
     [SerializeField] private GameObject glassObject;   // ガラス表示オブジェクト
     [SerializeField] private GameObject boardObject;   // 補強板の表示オブジェクト
 
-    [SerializeField] private float breakDelay = 5f; // 雪霊が壊すのにかかる時間（Boarded状態のみ）
+    [SerializeField] private float breakDelayNormal = 5f; // 通常状態を壊すのにかかる時間
+    [SerializeField] private float breakDelayBoarded = 15f; // 補強状態を壊すのにかかる時間
 
     private bool isBeingAttacked = false;
     private bool isBoarding = false;
     private bool isBreak = false;
     private Coroutine boardingCoroutine;
+    private Coroutine breakingCoroutine;
 
     public WindowState CurrentState => currentState;
+
+    [SerializeField] private GameObject durabilityGaugeRoot;
+    [SerializeField] private UnityEngine.UI.Slider durabilitySlider;
+    private Image durabilityFillImage;
+
+    [SerializeField] private GameObject boardGaugeRoot;
+    [SerializeField] private UnityEngine.UI.Slider boardGaugeSlider;
 
     private void Start()
     {
         UpdateVisuals();
+        HideDurabilityGauge();
+
+        if (durabilitySlider != null && durabilitySlider.fillRect != null)
+        {
+            durabilityGaugeRoot.gameObject.SetActive(false);
+            durabilityFillImage = durabilitySlider.fillRect.GetComponent<Image>();
+        }
     }
 
     /// <summary>
@@ -75,11 +92,20 @@ public class Window : MonoBehaviour, IInteractable
         float timer = 0f;
 
         isBoarding = true;
+        boardGaugeRoot.SetActive(true);
+        boardGaugeSlider.value = 0f;
+
         Debug.Log("🔧 補強開始...");
 
         while (timer < holdTime)
         {
             timer += Time.deltaTime;
+
+            if (boardGaugeSlider != null)
+            {
+                boardGaugeSlider.value = timer / holdTime;  // スライダー更新
+            }
+
             yield return null;
         }
 
@@ -87,6 +113,9 @@ public class Window : MonoBehaviour, IInteractable
         UpdateVisuals();
         isBoarding = false;
         boardingCoroutine = null;
+
+        boardGaugeRoot.SetActive(false);
+        boardGaugeSlider.value = 0f;
 
         // 板アイテムを1つ消費
         InventoryManager.Instance?.ConsumeItem(plank);
@@ -105,6 +134,9 @@ public class Window : MonoBehaviour, IInteractable
             boardingCoroutine = null;
             isBoarding = false;
 
+            boardGaugeRoot.SetActive(false);
+            boardGaugeSlider.value = 0f;
+
             Debug.Log("❌ 補強キャンセルされました");
         }
     }
@@ -122,34 +154,85 @@ public class Window : MonoBehaviour, IInteractable
     /// </summary>
     public void BreakWindow()
     {
-        if (currentState == WindowState.Boarded)
-        {
-            StartCoroutine(BreakAfterDelay(breakDelay));
-        }
-        else if (currentState == WindowState.Normal)
-        {
-            currentState = WindowState.Broken;
-            isBreak = true;
-            UpdateVisuals();
-            Debug.Log("💥 ガラスを破壊しました");
-        }
+        if (isBeingAttacked) return;
+
+        float delay = (currentState == WindowState.Boarded) ? breakDelayBoarded : breakDelayNormal;
+        breakingCoroutine = StartCoroutine(BreakAfterDelay(delay));
     }
 
     private IEnumerator BreakAfterDelay(float delay)
     {
-        if (isBeingAttacked) yield break;
         isBeingAttacked = true;
 
         Debug.Log("⏳ 窓を破壊中...");
 
-        yield return new WaitForSeconds(delay);
+        ShowDurabilityGauge();
+        float timer = 0f;
+
+        while (timer < delay)
+        {
+            timer += Time.deltaTime;
+
+            // 耐久ゲージ更新
+            UpdateDurabilityGauge(timer / delay);
+
+            yield return null;
+        }
 
         currentState = WindowState.Broken;
         isBreak = true;
         UpdateVisuals();
         isBeingAttacked = false;
+        breakingCoroutine = null;
 
-        Debug.Log("💥 窓が破壊されました（板＋ガラス）");
+        HideDurabilityGauge();
+
+        Debug.Log("💥 窓が破壊されました");
+    }
+
+    private void ShowDurabilityGauge()
+    {
+        if (durabilityGaugeRoot != null)
+            durabilityGaugeRoot.SetActive(true);
+
+        if (durabilitySlider != null)
+            durabilitySlider.value = 1f;
+    }
+
+    private void HideDurabilityGauge()
+    {
+        if (durabilityGaugeRoot != null)
+            durabilityGaugeRoot.SetActive(false);
+    }
+
+    private void UpdateDurabilityGauge(float progress)
+    {
+        if (durabilitySlider != null)
+        {
+            float value = Mathf.Clamp01(1f - progress);
+            durabilitySlider.value = value;
+
+            if (durabilityFillImage != null)
+            {
+                // 緑→黄→赤 に色変化
+                Color green = Color.green;
+                Color yellow = Color.yellow;
+                Color red = Color.red;
+
+                if (value > 0.5f)
+                {
+                    // 0.5～1 は 緑→黄 に線形補間
+                    float t = (value - 0.5f) * 2f; // 0～1
+                    durabilityFillImage.color = Color.Lerp(yellow, green, t);
+                }
+                else
+                {
+                    // 0～0.5 は 黄→赤 に線形補間
+                    float t = value * 2f; // 0～1
+                    durabilityFillImage.color = Color.Lerp(red, yellow, t);
+                }
+            }
+        }
     }
 
     /// <summary>

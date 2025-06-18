@@ -497,18 +497,18 @@ ModelImporter:
         length: 0
         modified: 0
     skeleton:
-    - name: Kouhaku_yukidaruma_Normal_1(Clone)
+    - name: Yukidaruma(Clone)
       parentName: 
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Kouhaku_yukidaruma_low
-      parentName: Kouhaku_yukidaruma_Normal_1(Clone)
+      parentName: Yukidaruma(Clone)
       position: {x: -0, y: 1.6786005, z: 0}
       rotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
       scale: {x: 1, y: 1, z: 1}
     - name: root
-      parentName: Kouhaku_yukidaruma_Normal_1(Clone)
+      parentName: Yukidaruma(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
       scale: {x: 1, y: 1, z: 1}
@@ -615,7 +615,7 @@ ModelImporter:
     - name: c_pinky3.l
       parentName: c_pinky2.l
       position: {x: -0.000000009536743, y: 0.0407925, z: 0.00000017404555}
-      rotation: {x: -0.0774217, y: 0.03659237, z: 0.025653869, w: 0.99599636}
+      rotation: {x: -0.07742171, y: 0.03659237, z: 0.02565387, w: 0.99599636}
       scale: {x: 0.99999994, y: 0.9999997, z: 0.9999998}
     - name: c_ring1.l
       parentName: hand.l
@@ -655,7 +655,7 @@ ModelImporter:
     - name: arm_stretch.r
       parentName: shoulder.r
       position: {x: -2.9802322e-10, y: 0.14742388, z: -0.000000025732442}
-      rotation: {x: 0.061098017, y: 0.20413385, z: 0.14077827, w: -0.9668392}
+      rotation: {x: 0.06109801, y: 0.20413385, z: 0.14077826, w: -0.9668392}
       scale: {x: 1.0000005, y: 1.000001, z: 1}
     - name: arm_twist.r
       parentName: arm_stretch.r
@@ -710,7 +710,7 @@ ModelImporter:
     - name: c_pinky1.r
       parentName: hand.r
       position: {x: -0.036681615, y: 0.17316091, z: 0.022274682}
-      rotation: {x: -0.068061866, y: 0.012144347, z: -0.027637701, w: -0.9972243}
+      rotation: {x: -0.06806187, y: 0.012144347, z: -0.027637703, w: -0.9972243}
       scale: {x: 1.0000004, y: 1.0000002, z: 1.0000004}
     - name: c_pinky2.r
       parentName: c_pinky1.r
@@ -725,7 +725,7 @@ ModelImporter:
     - name: c_ring1.r
       parentName: hand.r
       position: {x: -0.012590133, y: 0.21988332, z: 0.022458855}
-      rotation: {x: 0.00048007772, y: -0.04967479, z: 0.0133531485, w: 0.99867606}
+      rotation: {x: 0.00048007775, y: -0.04967479, z: 0.013353149, w: 0.99867606}
       scale: {x: 1.0000005, y: 1.0000002, z: 1.0000006}
     - name: c_ring2.r
       parentName: c_ring1.r
@@ -755,7 +755,7 @@ ModelImporter:
     - name: thigh_stretch.l
       parentName: root.x
       position: {x: -0.09854073, y: 0.000000076293944, z: -0.0000006866668}
-      rotation: {x: 0.71312594, y: 0.037473213, z: -0.6985789, w: -0.04510924}
+      rotation: {x: 0.71312594, y: 0.03747321, z: -0.6985789, w: -0.045109235}
       scale: {x: 1, y: 1, z: 1.0000161}
     - name: leg_stretch.l
       parentName: thigh_stretch.l

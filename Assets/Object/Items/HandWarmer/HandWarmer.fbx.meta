@@ -1,14 +1,9 @@
 fileFormatVersion: 2
-guid: 39eb5c39cca0cb24e807fa8d993266ac
+guid: bdfd9dd8b8c2abb4ebb59e0a6da15209
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: blueman_M
-    second: {fileID: 2100000, guid: 2cf5864ae88368448987ec6b126fb612, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0

@@ -321,6 +321,11 @@ public class InventoryManager : MonoBehaviour
                 StartPlacement(item, slot);
                 break;
 
+            case ItemType.Tablet:
+                ItemData selectedItem = GetSelectedItem();
+                selectedItem?.Use();
+                break;
+
             default:
                 Debug.Log($"使用不可タイプ: {item.itemName} は Usable または Placeable ではありません");
                 break;

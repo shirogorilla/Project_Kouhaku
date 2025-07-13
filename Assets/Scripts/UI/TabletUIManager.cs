@@ -35,6 +35,8 @@ public class TabletUIManager : MonoBehaviour
         // プレイヤー操作(視点操作)を止める
         if (playerMovement != null)
             playerMovement.enabled = false;
+
+        InputManager.Instance.EnableUIControls();
     }
 
     public void CloseTablet()
@@ -54,5 +56,7 @@ public class TabletUIManager : MonoBehaviour
         // プレイヤー操作(視点操作)再開
         if (playerMovement != null)
             playerMovement.enabled = true;
+
+        InputManager.Instance.EnableGameplayControls();
     }
 }

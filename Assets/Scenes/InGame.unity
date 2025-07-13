@@ -7447,12 +7447,16 @@ MonoBehaviour:
   m_XRTrackingOrigin: {fileID: 0}
   m_ActionsAsset: {fileID: -944628639613478452, guid: f1cf42f34fa51e041805b3539e3a033a,
     type: 3}
-  m_PointAction: {fileID: 0}
+  m_PointAction: {fileID: -8992407162060255925, guid: f1cf42f34fa51e041805b3539e3a033a,
+    type: 3}
   m_MoveAction: {fileID: 1968556524793614518, guid: f1cf42f34fa51e041805b3539e3a033a,
     type: 3}
-  m_SubmitAction: {fileID: 0}
-  m_CancelAction: {fileID: 0}
-  m_LeftClickAction: {fileID: 0}
+  m_SubmitAction: {fileID: 3762934049373789325, guid: f1cf42f34fa51e041805b3539e3a033a,
+    type: 3}
+  m_CancelAction: {fileID: -1738803104158256748, guid: f1cf42f34fa51e041805b3539e3a033a,
+    type: 3}
+  m_LeftClickAction: {fileID: -1466529430806672151, guid: f1cf42f34fa51e041805b3539e3a033a,
+    type: 3}
   m_MiddleClickAction: {fileID: 0}
   m_RightClickAction: {fileID: 0}
   m_ScrollWheelAction: {fileID: 0}
@@ -33254,6 +33258,79 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 5672705315796833729}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &6234475208366407101
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 242060734782900289, guid: d4c40a19523dda2419466d97ff3d03a6,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6177764548506014267, guid: d4c40a19523dda2419466d97ff3d03a6,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3.41
+      objectReference: {fileID: 0}
+    - target: {fileID: 6177764548506014267, guid: d4c40a19523dda2419466d97ff3d03a6,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6177764548506014267, guid: d4c40a19523dda2419466d97ff3d03a6,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -7.76
+      objectReference: {fileID: 0}
+    - target: {fileID: 6177764548506014267, guid: d4c40a19523dda2419466d97ff3d03a6,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6177764548506014267, guid: d4c40a19523dda2419466d97ff3d03a6,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6177764548506014267, guid: d4c40a19523dda2419466d97ff3d03a6,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6177764548506014267, guid: d4c40a19523dda2419466d97ff3d03a6,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6177764548506014267, guid: d4c40a19523dda2419466d97ff3d03a6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6177764548506014267, guid: d4c40a19523dda2419466d97ff3d03a6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6177764548506014267, guid: d4c40a19523dda2419466d97ff3d03a6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6840972836287514753, guid: d4c40a19523dda2419466d97ff3d03a6,
+        type: 3}
+      propertyPath: m_Name
+      value: Boss_Yukidaruma
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d4c40a19523dda2419466d97ff3d03a6, type: 3}
 --- !u!1001 &6583824392954939952
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33421,3 +33498,4 @@ SceneRoots:
   - {fileID: 1845770878}
   - {fileID: 805157978}
   - {fileID: 1859487317}
+  - {fileID: 6234475208366407101}

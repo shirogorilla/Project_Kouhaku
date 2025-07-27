@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 06c5443cd273d4e46b0226c0e1eebab8
+guid: a524ba081659ce340a2c31ba7dd74aef
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,8 +7,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: M_plastic
+    second: {fileID: 2100000, guid: 4079298da40c78e4f861870fc919602e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: M_plastic_bottle
-    second: {fileID: 2100000, guid: 3c28b8bd9d54fff4193530f8b4e41499, type: 2}
+    second: {fileID: 2100000, guid: aec42216f39d13241b893b98d509841c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_water
+    second: {fileID: 2100000, guid: 97188eb10260fec498f11378759d3346, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

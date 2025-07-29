@@ -506,4 +506,15 @@ public class InventoryManager : MonoBehaviour
         }
         return null;
     }
+
+    public GameObject GetSelectedItemPrefab()
+    {
+        var item = GetSelectedItem();
+        return item != null ? item.handPrefab : null;
+    }
+
+    public int GetSelectedSlotIndex()
+    {
+        return selectedSlotIndex;
+    }
 }

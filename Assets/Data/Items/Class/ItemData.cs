@@ -19,6 +19,7 @@ public class ItemData : ScriptableObject
     public string description;
     public int maxStackAmount = 10;  // Å‘åŠ”
     public ItemType itemType = ItemType.Usable;
+    public GameObject handPrefab;
 
     public GameObject placeablePrefab;
 

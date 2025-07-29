@@ -17,6 +17,8 @@ MonoBehaviour:
   description: "\u30DD\u30EA\u30BF\u30F3\u30AF"
   maxStackAmount: 1
   itemType: 3
+  handPrefab: {fileID: 2861863632084876288, guid: 702e723928e643042a0f352c07190676,
+    type: 3}
   placeablePrefab: {fileID: 0}
   maxFuelAmount: 100
   fuelAmount: 40

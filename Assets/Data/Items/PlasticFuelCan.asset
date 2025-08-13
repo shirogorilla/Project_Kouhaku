@@ -19,6 +19,8 @@ MonoBehaviour:
   itemType: 3
   handPrefab: {fileID: 2861863632084876288, guid: 702e723928e643042a0f352c07190676,
     type: 3}
+  droppedPrefab: {fileID: 3851270207775655064, guid: 6bced83388706164a9f90480efecd84b,
+    type: 3}
   placeablePrefab: {fileID: 0}
   maxFuelAmount: 100
   fuelAmount: 40

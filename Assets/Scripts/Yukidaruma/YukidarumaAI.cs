@@ -17,9 +17,21 @@ public class YukidarumaAI : MonoBehaviour
 
     private bool hasEnteredHouse = false;
 
+    [SerializeField] private GameObject attackHitbox; // ヒットボックス
+    [SerializeField] private float attackCooldown = 2.0f; // 攻撃間隔
+    [SerializeField] private float attackDamage = 10f;    // 与ダメージ
+
+    private float lastAttackTime = -Mathf.Infinity;
+    private Animator animator;
+
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
+        if (attackHitbox != null)
+        {
+            attackHitbox.SetActive(false); // 初期は非アクティブ
+        }
 
         // プレイヤーの Transform をタグで取得（要：プレイヤーに "Player" タグ）
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
@@ -72,7 +84,17 @@ public class YukidarumaAI : MonoBehaviour
                 }
                 else
                 {
-                    agent.ResetPath(); // 攻撃処理へ
+                    agent.ResetPath();
+
+                    if (Time.time >= lastAttackTime + attackCooldown)
+                    {
+                        lastAttackTime = Time.time;
+
+                        if (animator != null)
+                        {
+                            animator.SetTrigger("Attack");
+                        }
+                    }
                 }
                 break;
 
@@ -157,6 +179,24 @@ public class YukidarumaAI : MonoBehaviour
             {
                 door.ForceOpen(transform.position);
             }
+        }
+    }
+
+    public void EnableHitbox()
+    {
+        if (attackHitbox != null)
+        {
+            attackHitbox.SetActive(true);
+            StartCoroutine(DisableHitboxAfterDelay(0.3f)); // 0.3秒後に自動でOFF
+        }
+    }
+
+    private IEnumerator DisableHitboxAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (attackHitbox != null)
+        {
+            attackHitbox.SetActive(false);
         }
     }
 }

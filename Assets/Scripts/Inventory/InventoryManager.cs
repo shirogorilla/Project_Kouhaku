@@ -443,14 +443,21 @@ public class InventoryManager : MonoBehaviour
         if (slot.IsEmpty()) return;
 
         var item = slot.GetItem();
+
+        // ここで droppedPrefab が無ければ処理中断
+        if (item.droppedPrefab == null)
+        {
+            Debug.LogWarning($"⚠️ {item.itemName} は droppedPrefab が未設定のため、ドロップされませんでした");
+            return;
+        }
+
         Debug.Log($"アイテム捨てた: {item.itemName}");
 
-        // 1. 地面にアイテムプレハブを生成
-        Vector3 dropPosition = playerTransform.position + playerTransform.forward * 1.5f;// プレイヤー位置の前方にドロップ
-        Instantiate(droppedItemPrefab, dropPosition, Quaternion.identity)
-            .GetComponent<DroppedItem>().SetItem(item); // アイテムデータ渡す（下で作成）
+        Vector3 dropPosition = playerTransform.position + playerTransform.forward * 1.5f;
 
-        // 2. スロット内の数を減らす or 空にする
+        GameObject dropped = Instantiate(item.droppedPrefab, dropPosition, item.droppedPrefab.transform.rotation);
+        dropped.GetComponent<DroppedItem>()?.SetItem(item);
+
         if (slot.AddAmount(-1))
         {
             if (slot.GetAmount() <= 0)

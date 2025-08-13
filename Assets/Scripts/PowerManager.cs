@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class PowerManager : MonoBehaviour
 {
+    public GameObject breaker;
+    Animator breakerAnimator;
+
     public static PowerManager Instance { get; private set; }
 
     [Header("電力容量")]
@@ -18,6 +21,8 @@ public class PowerManager : MonoBehaviour
 
     private void Awake()
     {
+        breakerAnimator = breaker.GetComponent<Animator>();
+
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -32,6 +37,7 @@ public class PowerManager : MonoBehaviour
         if (!isBreakerTripped && currentPowerUsage > MaxPowerCapacity)
         {
             Debug.Log("⚡ ブレーカーが落ちました！");
+            breakerAnimator.SetTrigger("OFF");
             TripBreaker();
         }
     }
@@ -78,6 +84,7 @@ public class PowerManager : MonoBehaviour
     public void ResetBreaker()
     {
         Debug.Log("🔁 ブレーカーを復帰させました");
+        breakerAnimator.SetTrigger("ON");
         isBreakerTripped = false;
 
         // 注意：復帰時に電化製品の電源はOFFのまま

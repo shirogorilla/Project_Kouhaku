@@ -19,5 +19,7 @@ MonoBehaviour:
   itemType: 5
   handPrefab: {fileID: 940048677276728401, guid: af84c44391abb924092ecec5e3e07f24,
     type: 3}
+  droppedPrefab: {fileID: 6623940155066419246, guid: 161550aee40c6b844b35572866f72077,
+    type: 3}
   placeablePrefab: {fileID: 0}
   maxFuelAmount: 0

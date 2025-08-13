@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using System;
 
 public class PlayerStatus : MonoBehaviour
@@ -6,7 +6,7 @@ public class PlayerStatus : MonoBehaviour
     public event Action OnStatusChanged;
 
     public float MaxHP = 100f;
-    public float MaxValue = 100f; // ‹¤’ÊÅ‘å’li‰h—{E”æ˜JE‘Ì‰·j
+    public float MaxValue = 100f; // å…±é€šæœ€å¤§å€¤ï¼ˆæ „é¤Šãƒ»ç–²åŠ´ãƒ»ä½“æ¸©ï¼‰
 
     public float CurrentHP { get; private set; }
     public float Nutrition { get; private set; }
@@ -21,12 +21,12 @@ public class PlayerStatus : MonoBehaviour
 
     private void Update()
     {
-        // ‰¼‚ÌŒ¸­ƒƒWƒbƒNiŒã‚Å’²®‰Â”\j
+        // ä»®ã®æ¸›å°‘ãƒ­ã‚¸ãƒƒã‚¯ï¼ˆå¾Œã§èª¿æ•´å¯èƒ½ï¼‰
         Nutrition = Mathf.Max(0, Nutrition - Time.deltaTime * 0.1f);
         Fatigue = Mathf.Max(0, Fatigue - Time.deltaTime * 0.05f);
         BodyTemperature = Mathf.Max(0, BodyTemperature - Time.deltaTime * 0.07f);
 
-        // ó‘Ô•Ï‰»‚ÅHP‚É‚à‰e‹¿‚ªo‚é—á
+        // çŠ¶æ…‹å¤‰åŒ–ã§HPã«ã‚‚å½±éŸ¿ãŒå‡ºã‚‹ä¾‹
         if (Nutrition <= 0 || Fatigue <= 0 || BodyTemperature <= 0)
         {
             CurrentHP = Mathf.Max(0, CurrentHP - Time.deltaTime * 0.5f);
@@ -57,5 +57,22 @@ public class PlayerStatus : MonoBehaviour
     {
         BodyTemperature = Mathf.Min(BodyTemperature + amount, MaxValue);
         OnStatusChanged?.Invoke();
+    }
+
+    public void TakeDamage(float amount)
+    {
+        CurrentHP -= amount;
+        Debug.Log($"ğŸ§Š ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒ {amount} ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’å—ã‘ãŸã€‚æ®‹HPï¼š{CurrentHP}");
+
+        if (CurrentHP <= 0f)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        Debug.Log("ğŸ’€ ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼æ­»äº¡ï¼");
+        // GameOverå‡¦ç†ãªã©
     }
 }

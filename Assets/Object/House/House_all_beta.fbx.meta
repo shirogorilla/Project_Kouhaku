@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 719fb82ec98e81843b0851d55dace0bc
+guid: c977a833a0d9f8b45abb9ce960243ba0
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -8,22 +8,22 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: CL
-    second: {fileID: 2100000, guid: a47cea2f5d32ba148a0244e46b6e56b2, type: 2}
+    second: {fileID: 2100000, guid: fea5c846dda454c498ec9614b9655e60, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: FL
-    second: {fileID: 2100000, guid: 18c85971484bf074e8d4a2ed33d00882, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: bal_xxx
-    second: {fileID: 2100000, guid: 5b9e6e25ac76eec49b2f66c01111f758, type: 2}
+    second: {fileID: 2100000, guid: 71e39e359a3160943a5c345c103fe9de, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: habaki
-    second: {fileID: 2100000, guid: 5ecef8a95c25a3345a76a0b8ed765b0a, type: 2}
+    second: {fileID: 2100000, guid: cc4754389f5c53f42a3ec9b8fed57ff0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wall
+    second: {fileID: 2100000, guid: cfb11e42cafa41247a1c39f931c2f9f0, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

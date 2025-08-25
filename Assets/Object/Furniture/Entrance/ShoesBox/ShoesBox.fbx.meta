@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d73628371b05e5e4ca3a6562030fa820
+guid: 77793670cc520764a85c92d8997948eb
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,8 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: CircuitBreaker
-    second: {fileID: 2100000, guid: f595f07506f36dc45a10163aed67fab8, type: 2}
+      name: ShoesBox
+    second: {fileID: 2100000, guid: d196405a2ab3daf46869708cd7c11d66, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

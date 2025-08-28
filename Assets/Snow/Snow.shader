@@ -63,6 +63,7 @@ Shader "Custom/URP_Snow_Lit_ShadowCaster"
             #pragma multi_compile _ _ADDITIONAL_LIGHTS
             #pragma multi_compile _ _ADDITIONAL_LIGHT_SHADOWS
             #pragma multi_compile _ _SHADOWS_SOFT
+            #pragma multi_compile_fog   // ← Fog対応を有効化
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
@@ -80,6 +81,7 @@ Shader "Custom/URP_Snow_Lit_ShadowCaster"
                 float2 uv         : TEXCOORD0;
                 float3 normalWS   : TEXCOORD1;
                 float3 positionWS : TEXCOORD2;
+                float  fogFactor  : TEXCOORD3;
             };
 
             TEXTURE2D(_BaseMap);
@@ -95,6 +97,9 @@ Shader "Custom/URP_Snow_Lit_ShadowCaster"
                 OUT.uv = TRANSFORM_TEX(IN.uv, _BaseMap);
                 OUT.normalWS = TransformObjectToWorldNormal(IN.normalOS);
                 OUT.positionWS = TransformObjectToWorld(IN.positionOS.xyz);
+
+                // Fog計算
+                OUT.fogFactor = ComputeFogFactor(OUT.positionCS.z);
                 return OUT;
             }
 
@@ -120,11 +125,17 @@ Shader "Custom/URP_Snow_Lit_ShadowCaster"
                 inputData.normalWS        = normalize(IN.normalWS);
                 inputData.viewDirectionWS = normalize(_WorldSpaceCameraPos - IN.positionWS);
                 inputData.shadowCoord     = TransformWorldToShadowCoord(IN.positionWS);
-                inputData.fogCoord        = 0;
+                inputData.fogCoord        = IN.fogFactor;
                 inputData.vertexLighting  = 0;
                 inputData.bakedGI         = 0;
 
-                return UniversalFragmentPBR(inputData, surfaceData);
+                // PBR計算
+                half4 col = UniversalFragmentPBR(inputData, surfaceData);
+
+                // Fog適用
+                col.rgb = MixFog(col.rgb, inputData.fogCoord);
+
+                return col;
             }
 
             ENDHLSL

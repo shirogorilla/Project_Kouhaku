@@ -21,7 +21,7 @@ public class RoomTemperatureMonitor : MonoBehaviour
         // 各部屋の温度
         foreach (var room in rooms)
         {
-            sb.AppendLine($"{room.name}: {room.temperature:F1}°C");
+            sb.AppendLine($"{room.name}: {room.currentTemperature:F1}°C");
         }
 
         textDisplay.text = sb.ToString();

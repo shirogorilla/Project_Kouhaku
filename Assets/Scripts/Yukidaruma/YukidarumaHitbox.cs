@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class YukidarumaHitbox : MonoBehaviour
 {
-    public float damage = 10f;
+    public float damage;
+
+    public void Initialize(float attackDamage)
+    {
+        damage = attackDamage;
+    }
 
     private void OnTriggerEnter(Collider other)
     {

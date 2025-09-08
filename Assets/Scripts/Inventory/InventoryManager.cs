@@ -301,6 +301,7 @@ public class InventoryManager : MonoBehaviour
             return;
         }
 
+        ItemData selectedItem;
         switch (item.itemType)
         {
             case ItemType.Usable:
@@ -322,7 +323,12 @@ public class InventoryManager : MonoBehaviour
                 break;
 
             case ItemType.Tablet:
-                ItemData selectedItem = GetSelectedItem();
+                selectedItem = GetSelectedItem();
+                selectedItem?.Use();
+                break;
+
+            case ItemType.Bat:
+                selectedItem = GetSelectedItem();
                 selectedItem?.Use();
                 break;
 

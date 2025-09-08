@@ -240,4 +240,9 @@ public class YukidarumaAI : MonoBehaviour
             ApplyTemperatureEffect(); // 入室直後に即反映
         }
     }
+
+    public void TakeDamage(int damage)
+    {
+        // 被ダメージ処理　未実装
+    }
 }

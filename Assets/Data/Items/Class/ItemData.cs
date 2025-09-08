@@ -8,6 +8,7 @@ public enum ItemType
     PlasticFuelCan, // ポリタンク(燃料持ち運び用)
     WoodenPlank,    // 板(窓の補強用)
     Tablet,         // タブレット
+    Bat,            // バット
     KeyItem,        // 鍵アイテム（今後拡張用）
 }
 

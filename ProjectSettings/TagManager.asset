@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - EntryPoint
+  - Enemy
   layers:
   - Default
   - TransparentFX

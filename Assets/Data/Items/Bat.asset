@@ -23,6 +23,7 @@ MonoBehaviour:
     type: 3}
   placeablePrefab: {fileID: 0}
   maxFuelAmount: 0
-  hitboxPrefab: {fileID: 0}
+  hitboxPrefab: {fileID: 6422211050183892559, guid: a3dde70dbda2b4048bd0bec496bc0927,
+    type: 3}
   attackDuration: 0.5
   hitboxActiveTime: 0.2

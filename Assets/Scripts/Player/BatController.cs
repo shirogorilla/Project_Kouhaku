@@ -1,8 +1,10 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class BatController : MonoBehaviour
 {
     public static BatController Instance;
+
+    [SerializeField] private GameObject hitboxObject;
 
     private Animator animator;
     private bool isAttacking = false;
@@ -10,36 +12,32 @@ public class BatController : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        animator = GetComponentInChildren<Animator>(); // ƒoƒbƒgƒ‚ƒfƒ‹‚É Animator ‚ª‚ ‚é‘z’è
+        animator = GetComponentInChildren<Animator>();
+
+        if (hitboxObject != null)
+            hitboxObject.SetActive(false);
     }
 
-    public void Attack(ItemData_Bat batData)
+    public void Attack()
     {
-        if (isAttacking) return; // ˜A‘Å–h~
+        if (isAttacking) return;
         isAttacking = true;
-
-        // ƒAƒjƒ[ƒVƒ‡ƒ“Ä¶
         animator.SetTrigger("Attack");
-
-        // ƒqƒbƒgƒ{ƒbƒNƒX¶¬
-        StartCoroutine(SpawnHitbox(batData));
     }
 
-    private System.Collections.IEnumerator SpawnHitbox(ItemData_Bat batData)
+    // --- ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¤ãƒ™ãƒ³ãƒˆã‹ã‚‰å‘¼ã¶ ---
+
+    public void EnableHitbox()
     {
-        yield return new WaitForSeconds(0.1f); // ƒAƒjƒ‚ÌU‚è”²‚«ƒ^ƒCƒ~ƒ“ƒO‚É‡‚í‚¹‚Ä’²®
+        if (hitboxObject != null)
+            hitboxObject.SetActive(true);
+    }
 
-        var hitbox = Instantiate(
-            batData.hitboxPrefab,
-            transform.position + transform.forward * 1.0f, // ƒvƒŒƒCƒ„[‘O•û
-            transform.rotation
-        );
-        hitbox.transform.SetParent(transform); // ƒvƒŒƒCƒ„[‚É’Ç]i•K—v‚È‚çŠO‚·j
+    public void DisableHitbox()
+    {
+        if (hitboxObject != null)
+            hitboxObject.SetActive(false);
 
-        Destroy(hitbox, batData.hitboxActiveTime);
-
-        // UŒ‚I—¹‘Ò‹@
-        yield return new WaitForSeconds(batData.attackDuration);
         isAttacking = false;
     }
 }

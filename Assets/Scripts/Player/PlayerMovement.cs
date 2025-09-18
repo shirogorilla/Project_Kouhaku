@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public static PlayerMovement Instance { get; private set; }
+
     private InputAction moveAction;
     private InputAction lookAction;
     private InputAction shortInteractAction;
@@ -25,6 +27,9 @@ public class PlayerMovement : MonoBehaviour
 
     public float interactRange = 2.5f; // インタラクト距離
 
+    private float currentRoomTemperature = 20;
+    public float CurrentRoomTemperature => currentRoomTemperature;
+
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -34,6 +39,13 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        Instance = this;
+
         var playerInput = GetComponent<PlayerInput>();
         playerCamera = GetComponentInChildren<Camera>();
 
@@ -263,5 +275,10 @@ public class PlayerMovement : MonoBehaviour
             Debug.Log("▶ 長押し完了後の離し");
             TryCancelInteract(); // ← ここは長押しのキャンセル処理のみ
         }
+    }
+
+    public void SetCurrentRoomTemperature(float temp)
+    {
+        currentRoomTemperature = temp;
     }
 }

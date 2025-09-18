@@ -139,4 +139,12 @@ public class RoomTemperature : MonoBehaviour
         // 想定外（ありえないはず）
         return 1f;
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            PlayerMovement.Instance.SetCurrentRoomTemperature(currentTemperature);
+        }
+    }
 }

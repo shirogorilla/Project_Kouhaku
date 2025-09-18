@@ -5210,7 +5210,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -6707,7 +6707,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -6728,7 +6728,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -6749,7 +6749,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -6812,7 +6812,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 350835942}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -21325,7 +21325,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1058156773
 Transform:
   m_ObjectHideFlags: 0
@@ -29095,6 +29095,7 @@ GameObject:
   - component: {fileID: 1429435507}
   - component: {fileID: 1429435505}
   - component: {fileID: 1429435506}
+  - component: {fileID: 1429435508}
   m_Layer: 5
   m_Name: GameUI
   m_TagString: Untagged
@@ -29244,6 +29245,20 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   playerMovement: {fileID: 1999119145}
+--- !u!114 &1429435508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1429435498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec270dfb7bec8b145ad010eb89a15ff3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  updateInterval: 5
+  temperatureText: {fileID: 1838613406}
 --- !u!1 &1434050658
 GameObject:
   m_ObjectHideFlags: 0
@@ -37463,7 +37478,7 @@ GameObject:
   - component: {fileID: 1838613407}
   - component: {fileID: 1838613406}
   m_Layer: 5
-  m_Name: CurrentTemperature
+  m_Name: TemperatureText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37485,8 +37500,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 840, y: -277.21265}
-  m_SizeDelta: {x: 200, y: 71.5747}
+  m_AnchoredPosition: {x: 825.8828, y: -277.21265}
+  m_SizeDelta: {x: 228.2344, y: 71.5747}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1838613406
 MonoBehaviour:
@@ -37508,7 +37523,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "XX.X \xB0"
+  m_text: "XX.X \xB0C"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ee166d66010d46741a0aca539ed45336, type: 2}
   m_sharedMaterial: {fileID: -5128219651150859329, guid: ee166d66010d46741a0aca539ed45336,

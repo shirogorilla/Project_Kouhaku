@@ -651,6 +651,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 838806671b33d8f48b818c4e6142fd98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHP: 100
+  slipDamagePerTick: 1
   chaseRange: 50
   stopDistance: 2
   attackHitbox: {fileID: 151694359207524951}

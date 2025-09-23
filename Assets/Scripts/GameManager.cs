@@ -26,12 +26,18 @@ public class GameManager : MonoBehaviour
     public float OutsideTemperature => outsideTemperature;
     public int CurrentHour => currentHour;
     public int CurrentWave => currentWave;
-    public Difficulty CurrentDifficulty => difficulty;
+    public enum Difficulty { Easy, Normal, Hard }
+    public Difficulty CurrentDifficulty = Difficulty.Normal;
 
     private void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()

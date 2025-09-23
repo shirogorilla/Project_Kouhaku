@@ -1,9 +1,17 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+#if UNITY_EDITOR
+using TMPro;
+#endif
 
 public class YukidarumaAI : MonoBehaviour
 {
+    [Header("ステータス")]
+    public int maxHP;
+    private int currentHP;
+    public int slipDamagePerTick = 1;   // スリップダメージ
+
     [Header("Chase Settings")]
     public float chaseRange = 10f;       // プレイヤーを追跡する範囲
     public float stopDistance = 2f;      // 攻撃に入る距離
@@ -28,13 +36,31 @@ public class YukidarumaAI : MonoBehaviour
 
     private enum State { GoToEntryPoint, ChasePlayer, Idle }
     private State currentState = State.GoToEntryPoint;
-
     private bool hasEnteredHouse = false;
+
+#if UNITY_EDITOR
+    private TextMeshPro textHP;
+#endif
 
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+
+        // 難易度に応じたHP設定 (GameManagerから参照)
+        switch (GameManager.Instance.CurrentDifficulty)
+        {
+            case GameManager.Difficulty.Easy:
+                maxHP = 50;
+                break;
+            case GameManager.Difficulty.Normal:
+                maxHP = 100;
+                break;
+            case GameManager.Difficulty.Hard:
+                maxHP = 150;
+                break;
+        }
+        currentHP = maxHP;
 
         if (attackHitbox != null)
         {
@@ -68,6 +94,20 @@ public class YukidarumaAI : MonoBehaviour
         int walkType = Random.Range(0, 3);
         animator.SetInteger("WalkType", walkType);
         animator.Play("Walk" + walkType, 0, 0f);
+
+#if UNITY_EDITOR
+        // HPテキストを作成（ワールド座標用）
+        GameObject hpObj = new GameObject("HP_Text");
+        hpObj.transform.SetParent(transform);
+
+        textHP = hpObj.AddComponent<TextMeshPro>();
+        textHP.fontSize = 2.5f;
+        textHP.alignment = TextAlignmentOptions.Center;
+        textHP.color = Color.red;
+
+        // 雪霊の頭の上に配置
+        hpObj.transform.localPosition = new Vector3(0, 2.2f, 0);
+#endif
     }
 
     private void Update()
@@ -79,6 +119,11 @@ public class YukidarumaAI : MonoBehaviour
         {
             nextTempCheckTime = Time.time + updateTempInterval;
             ApplyTemperatureEffect();
+
+            if (currentRoom.currentTemperature >= 0f) // 0℃以上でスリップダメージ
+            {
+                TakeDamage(slipDamagePerTick);
+            }
         }
 
         switch (currentState)
@@ -134,6 +179,20 @@ public class YukidarumaAI : MonoBehaviour
                 }
                 break;
         }
+
+#if UNITY_EDITOR
+        if (textHP != null)
+        {
+            textHP.text = $"HP: {currentHP}/{maxHP}";
+
+            // プレイヤー方向を向く（カメラ方向を向かせる）
+            Camera cam = Camera.main;
+            if (cam != null)
+            {
+                textHP.transform.rotation = Quaternion.LookRotation(textHP.transform.position - cam.transform.position);
+            }
+        }
+#endif
     }
 
     private Transform FindClosestEntryPoint()
@@ -243,6 +302,18 @@ public class YukidarumaAI : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        // 被ダメージ処理　未実装
+        currentHP -= damage;
+        if (currentHP <= 0)
+        {
+            currentHP = 0;
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        agent.isStopped = true;
+        animator.SetTrigger("Death");
+        Destroy(gameObject, 5f);
     }
 }

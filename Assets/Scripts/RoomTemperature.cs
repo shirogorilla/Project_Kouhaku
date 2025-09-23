@@ -10,6 +10,7 @@ public struct TempSpeedPoint
 
 public class RoomTemperature : MonoBehaviour
 {
+    [SerializeField] private RoomTemperature room;
     public float currentTemperature = 20f;
 
     [SerializeField]
@@ -144,7 +145,15 @@ public class RoomTemperature : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            PlayerMovement.Instance.SetCurrentRoomTemperature(currentTemperature);
+            PlayerMovement.Instance.EnterRoom(this);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            PlayerMovement.Instance.ExitRoom(this);
         }
     }
 }

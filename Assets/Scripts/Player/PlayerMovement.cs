@@ -27,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
 
     public float interactRange = 2.5f; // インタラクト距離
 
+    private RoomTemperature currentRoom;
     private float currentRoomTemperature = 20;
     public float CurrentRoomTemperature => currentRoomTemperature;
 
@@ -107,6 +108,12 @@ public class PlayerMovement : MonoBehaviour
         {
             // Destroyされたか無効化されているのでクリア
             currentInteractTarget = null;
+        }
+
+        // 🔥 部屋に居続けても室温を取得し直す
+        if (currentRoom != null)
+        {
+            currentRoomTemperature = currentRoom.currentTemperature;
         }
     }
 
@@ -199,11 +206,13 @@ public class PlayerMovement : MonoBehaviour
         Debug.Log("▶ 単押し開始（押した瞬間）");
         longPressTriggered = false;
 
+        int interactMask = LayerMask.GetMask("Default", "Interactable", "Door");
+
         // 単押し対象だけ判定（長押し対象はスキップ）
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, interactRange))
+        if (Physics.Raycast(ray, out hit, interactRange, interactMask))
         {
             // ① ドア処理：DoorControllerを持つ親を探す
             var door = hit.collider.GetComponentInParent<DoorController>();
@@ -280,5 +289,19 @@ public class PlayerMovement : MonoBehaviour
     public void SetCurrentRoomTemperature(float temp)
     {
         currentRoomTemperature = temp;
+    }
+
+    public void EnterRoom(RoomTemperature room)
+    {
+        currentRoom = room;
+        currentRoomTemperature = room.currentTemperature;
+    }
+
+    public void ExitRoom(RoomTemperature room)
+    {
+        if (currentRoom == room)
+        {
+            currentRoom = null;
+        }
     }
 }

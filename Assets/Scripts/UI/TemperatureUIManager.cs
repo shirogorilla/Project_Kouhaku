@@ -11,6 +11,11 @@ public class TemperatureUIManager : MonoBehaviour
     private void OnEnable()
     {
         if (temperatureText == null) return;
+
+        // ゲーム開始時に即時更新
+        UpdateTemperatureImmediate();
+
+        // 以降は定期更新
         updateRoutine = StartCoroutine(UpdateTemperatureRoutine());
     }
 
@@ -19,17 +24,27 @@ public class TemperatureUIManager : MonoBehaviour
         if (updateRoutine != null) StopCoroutine(updateRoutine);
     }
 
+    private void UpdateTemperatureImmediate()
+    {
+        if (PlayerMovement.Instance != null)
+        {
+            float temp = PlayerMovement.Instance.CurrentRoomTemperature;
+            float displayTemp = Mathf.Floor(temp * 10f) / 10f;
+            UpdateDisplay(displayTemp);
+            StartCoroutine(BlinkEffect());
+        }
+    }
+
     private IEnumerator UpdateTemperatureRoutine()
     {
         while (true)
         {
+            yield return new WaitForSeconds(updateInterval);
+
             if (PlayerMovement.Instance != null)
             {
                 float temp = PlayerMovement.Instance.CurrentRoomTemperature;
-
-                // 小数点以下1桁で切り捨て
                 float displayTemp = Mathf.Floor(temp * 10f) / 10f;
-
                 UpdateDisplay(displayTemp);
                 StartCoroutine(BlinkEffect());
             }
@@ -37,8 +52,6 @@ public class TemperatureUIManager : MonoBehaviour
             {
                 Debug.LogWarning("PlayerMovement.Instance が見つかりません。待機中...");
             }
-
-            yield return new WaitForSeconds(updateInterval);
         }
     }
 
@@ -46,7 +59,7 @@ public class TemperatureUIManager : MonoBehaviour
     {
         if (temperatureText != null)
         {
-            temperatureText.text = $"{temp} °C"; // フォントに ° が含まれていればOK
+            temperatureText.text = $"{temp} °C";
         }
     }
 
